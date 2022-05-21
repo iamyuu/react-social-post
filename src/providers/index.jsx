@@ -1,10 +1,16 @@
+import { Provider as ReduxProvider } from 'react-redux';
 import { ChakraProvider } from '@chakra-ui/react';
 import theme from '~/theme';
+import store from '~/store';
 
 /**
  * @param {object} props
  * @param {import('react').ReactNode}  props.children
  */
 export default function AppProviders({ children }) {
-	return <ChakraProvider theme={theme}>{children}</ChakraProvider>;
+	return (
+		<ReduxProvider store={store}>
+			<ChakraProvider theme={theme}>{children}</ChakraProvider>
+		</ReduxProvider>
+	);
 }
