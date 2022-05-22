@@ -2,14 +2,17 @@
 
 ## User Stories
 
-- [ ] As a user, I can see a list of posts
-- [ ] As a user, I can add post
-- [ ] As a user, I can update post
-- [ ] As a user, I can delete post
+- [x] As a user, I can see a list of posts
+- [x] As a user, I can add post
+- [x] As a user, I can update post
+- [x] As a user, I can delete post
 
 ## Libraries
 
 - [Chakra UI](https://chakra-ui.com) for looks and feel in general
+- [Redux](https://redux.js.org) for state management
+- [Redux Toolkit](https://redux-toolkit.js.org) for easier write redux store
+- [Redux-Saga](https://redux-saga.js.org) for redux side effect manager
 
 ## Available Scripts
 
@@ -32,5 +35,6 @@
 ├── providers     # all of the application providers
 ├── stores        # global state stores
 ├── tests         # test utilities and mock server
+├── theme         # global styles and overridden chakra ui theme
 └── utils         # shared utility functions
 ```
