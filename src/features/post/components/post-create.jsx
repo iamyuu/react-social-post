@@ -3,7 +3,7 @@ import { useDispatch } from 'react-redux';
 import { useToast, VStack } from '@chakra-ui/react';
 import { Card } from '~/components/ui';
 import { FormInput, FormTextarea, ButtonSubmit } from '~/components/form';
-import { createPostAsync } from '../store';
+import { createPostAsync } from '../stores';
 
 /**
  * Create post form

@@ -71,7 +71,7 @@ const postSlice = createSlice({
 
 export const { selectAll: selectPosts } = postEntity.getSelectors(state => state.post);
 
-/** @type {(state: import('~/store').RootState) => [Status, string]} */
+/** @type {(state: import('~/stores').RootState) => [Status, string]} */
 export const selectStatus = state => [state.post.status, state.post.error];
 
 export const { addPost, updatePost, deletePost } = postSlice.actions;

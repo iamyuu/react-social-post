@@ -14,7 +14,7 @@ import {
 import { EditIcon } from '@chakra-ui/icons';
 import { IconButton } from '~/components/ui';
 import { FormInput, FormTextarea, ButtonSubmit } from '~/components/form';
-import { patchPostAsync } from '../store';
+import { patchPostAsync } from '../stores';
 
 /**
  * Post edit button

@@ -1,7 +1,7 @@
 import { Provider as ReduxProvider } from 'react-redux';
 import { ChakraProvider } from '@chakra-ui/react';
 import theme from '~/theme';
-import store from '~/store';
+import store from '~/stores';
 
 /**
  * @param {object} props

@@ -2,7 +2,7 @@ import * as React from 'react';
 import { useInView } from 'react-intersection-observer';
 import { useSelector, useDispatch } from 'react-redux';
 import { VStack, Text } from '@chakra-ui/react';
-import { selectPosts, selectStatus, fetchPostAsync, POST_LIMIT } from '../store';
+import { selectPosts, selectStatus, fetchPostAsync, POST_LIMIT } from '../stores';
 import { PostItem } from './post-item';
 import { PostLoading } from './post-loading';
 import { PostError } from './post-error';

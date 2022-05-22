@@ -13,7 +13,7 @@ import {
 } from '@chakra-ui/react';
 import { DeleteIcon } from '@chakra-ui/icons';
 import { IconButton } from '~/components/ui';
-import { deletePostAsync } from '../store';
+import { deletePostAsync } from '../stores';
 
 /**
  * Post delete button
