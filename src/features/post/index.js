@@ -1,2 +1,2 @@
 export { PostCreate, PostList } from './components';
-export { postReducer } from './store';
+export { postReducer, postSaga } from './store';

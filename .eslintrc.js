@@ -33,6 +33,7 @@ module.exports = {
 		'jsdoc/require-property-description': 'off',
 		'jsdoc/require-param-description': 'off',
 		'jsdoc/require-returns': 'off',
+		'jsdoc/require-yields': 'off',
 		'no-console': 'warn',
 		'no-restricted-imports': ['error', { patterns: ['~/features/*/*'] }],
 		'no-warning-comments': 'off',

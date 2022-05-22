@@ -1,4 +1,5 @@
 import * as React from 'react';
+import { useDispatch } from 'react-redux';
 import {
 	useToast,
 	useDisclosure,
@@ -12,7 +13,7 @@ import {
 } from '@chakra-ui/react';
 import { DeleteIcon } from '@chakra-ui/icons';
 import { IconButton } from '~/components/ui';
-import { deletePostById } from '../services/delete-post';
+import { deletePostAsync } from '../store';
 
 /**
  * Post delete button
@@ -20,16 +21,29 @@ import { deletePostById } from '../services/delete-post';
  * @param {{ postId: number }} props
  */
 export function PostDeleteButton(props) {
+	const dispatch = useDispatch();
 	const cancelRef = React.useRef();
 	const { isOpen, onOpen, onClose } = useDisclosure();
-	const { isSubmitting, deletePostMutation } = useDeletePostMutation();
+	const [isSubmitting, setSubmitting] = React.useState(false);
+	const toast = useToast({ variant: 'subtle', isClosable: true });
 
 	/**
 	 * Handling click delete button
 	 */
 	async function handleDelete() {
-		await deletePostMutation(props.postId);
-		onClose();
+		setSubmitting(true);
+
+		dispatch(
+			deletePostAsync({
+				postId: props.postId,
+				onSuccess: () => toast({ status: 'success', title: 'Post has been deleted' }),
+				onError: message => toast({ status: 'error', title: message }),
+				onFinally: () => {
+					setSubmitting(false);
+					onClose();
+				},
+			}),
+		);
 	}
 
 	return (
@@ -59,34 +73,4 @@ export function PostDeleteButton(props) {
 			</AlertDialog>
 		</>
 	);
-}
-
-/**
- * Custom hooks to delete post mutation
- */
-function useDeletePostMutation() {
-	const [isSubmitting, setSubmitting] = React.useState(false);
-	const toast = useToast({
-		variant: 'subtle',
-		isClosable: true,
-	});
-
-	/**
-	 * @param {number} postId
-	 */
-	async function deletePostMutation(postId) {
-		setSubmitting(true);
-
-		try {
-			await deletePostById(postId);
-
-			toast({ status: 'success', title: 'Post has been deleted' });
-		} catch (error) {
-			toast({ status: 'error', title: error.message || 'Something went wrong' });
-		} finally {
-			setSubmitting(false);
-		}
-	}
-
-	return { isSubmitting, deletePostMutation };
 }

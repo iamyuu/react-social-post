@@ -1,21 +1,42 @@
 import * as React from 'react';
+import { useDispatch } from 'react-redux';
 import { useToast, VStack } from '@chakra-ui/react';
 import { Card } from '~/components/ui';
 import { FormInput, FormTextarea, ButtonSubmit } from '~/components/form';
-import { createPost } from '../services/create-post';
+import { createPostAsync } from '../store';
 
 /**
  * Create post form
  */
 export function PostCreate() {
-	const { isSubmitting, createPostMutation } = useCreatePostMutation();
+	const dispatch = useDispatch();
+	const [isSubmitting, setSubmitting] = React.useState(false);
+	const toast = useToast({ variant: 'subtle', isClosable: true });
 
 	/**
 	 * @param {import('react').FormEvent<import('../types/form').PostFormElements>} event
 	 */
 	async function handleSubmit(event) {
 		event.preventDefault();
-		await createPostMutation(event.currentTarget.elements);
+		setSubmitting(true);
+
+		const { title, body } = event.currentTarget.elements;
+
+		dispatch(
+			createPostAsync({
+				formData: {
+					title: title.value,
+					body: body.value,
+				},
+				onSuccess: () => toast({ status: 'success', title: 'Post created' }),
+				onError: message => toast({ status: 'error', title: message }),
+				onFinally: () => {
+					// @ts-ignore
+					event.target.reset();
+					setSubmitting(false);
+				},
+			}),
+		);
 	}
 
 	return (
@@ -36,39 +57,4 @@ export function PostCreate() {
 			</VStack>
 		</Card>
 	);
-}
-
-/**
- * Custom hooks to create post mutation
- */
-function useCreatePostMutation() {
-	const [isSubmitting, setSubmitting] = React.useState(false);
-	const toast = useToast({
-		variant: 'subtle',
-		isClosable: true,
-	});
-
-	/**
-	 * @param {import('../types/form').FormFields} formElements
-	 */
-	async function createPostMutation(formElements) {
-		setSubmitting(true);
-
-		try {
-			const { title, body } = formElements;
-
-			await createPost({
-				title: title.value,
-				body: body.value,
-			});
-
-			toast({ status: 'success', title: 'Post created' });
-		} catch (error) {
-			toast({ status: 'error', title: error.message || 'Something went wrong' });
-		} finally {
-			setSubmitting(false);
-		}
-	}
-
-	return { isSubmitting, createPostMutation };
 }

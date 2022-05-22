@@ -1,8 +1,16 @@
+import { http } from '~/utils/http';
+
 /**
  * Edit post by post id
  *
  * @param {import('../types').Post} payload
  */
 export async function editPost(payload) {
-	window.console.log(`🚀 ~ TODO: editPost ~ payload`, payload);
+	return http(`/posts/${payload.id}`, {
+		method: 'PATCH',
+		data: {
+			title: payload.title,
+			body: payload.body,
+		},
+	});
 }

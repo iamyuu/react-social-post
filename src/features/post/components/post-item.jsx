@@ -6,21 +6,23 @@ import { PostDeleteButton } from './post-delete-button';
 /**
  * Single post
  *
- * @param {import('../types').Post} props
+ * @param {{ post: import('../types').Post }} props
  */
 export function PostItem(props) {
 	return (
-		<Card as='article' role='listitem'>
-			<Flex alignItems='center' as='header' justifyContent='space-between' mb={4}>
-				<Heading fontWeight={600}>{props.title}</Heading>
+		<Card as='article' role='listitem' w='full'>
+			<Flex alignItems='center' as='header' justifyContent='space-between' mb={2}>
+				<Heading fontSize='2xl' fontWeight={600}>
+					{props.post.title}
+				</Heading>
 
 				<ButtonGroup spacing={1}>
-					<PostEditButton post={props} />
-					<PostDeleteButton postId={props.id} />
+					<PostEditButton post={props.post} />
+					<PostDeleteButton postId={props.post.id} />
 				</ButtonGroup>
 			</Flex>
 
-			<Text>{props.body}</Text>
+			<Text>{props.post.body}</Text>
 		</Card>
 	);
 }

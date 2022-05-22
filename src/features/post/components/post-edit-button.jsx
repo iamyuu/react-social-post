@@ -1,4 +1,5 @@
 import * as React from 'react';
+import { useDispatch } from 'react-redux';
 import {
 	useToast,
 	useDisclosure,
@@ -13,7 +14,7 @@ import {
 import { EditIcon } from '@chakra-ui/icons';
 import { IconButton } from '~/components/ui';
 import { FormInput, FormTextarea, ButtonSubmit } from '~/components/form';
-import { editPost } from '../services/edit-post';
+import { patchPostAsync } from '../store';
 
 /**
  * Post edit button
@@ -21,17 +22,38 @@ import { editPost } from '../services/edit-post';
  * @param {{ post: import('../types').Post }} props
  */
 export function PostEditButton(props) {
+	const dispatch = useDispatch();
 	const initialRef = React.useRef();
 	const { isOpen, onOpen, onClose } = useDisclosure();
-	const { isSubmitting, editPostMutation } = useEditPostMutation();
+	const [isSubmitting, setSubmitting] = React.useState(false);
+	const toast = useToast({ variant: 'subtle', isClosable: true });
 
 	/**
 	 * @param {import('react').FormEvent<import('../types/form').PostFormElements>} event
 	 */
 	async function handleSave(event) {
 		event.preventDefault();
-		await editPostMutation(props.post.id, event.currentTarget.elements);
-		onClose();
+		setSubmitting(true);
+
+		const { title, body } = event.currentTarget.elements;
+
+		dispatch(
+			patchPostAsync({
+				formData: {
+					id: props.post.id,
+					title: title.value,
+					body: body.value,
+				},
+				onSuccess: () => {
+					toast({ status: 'success', title: 'Success edit post' });
+					onClose();
+				},
+				onError: message => toast({ status: 'error', title: message }),
+				onFinally: () => {
+					setSubmitting(false);
+				},
+			}),
+		);
 	}
 
 	return (
@@ -62,41 +84,4 @@ export function PostEditButton(props) {
 			</Modal>
 		</>
 	);
-}
-
-/**
- * Custom hooks to edit post mutation
- */
-function useEditPostMutation() {
-	const [isSubmitting, setSubmitting] = React.useState(false);
-	const toast = useToast({
-		variant: 'subtle',
-		isClosable: true,
-	});
-
-	/**
-	 * @param {number} postId
-	 * @param {import('./post-form-field').FormFields} formElements
-	 */
-	async function editPostMutation(postId, formElements) {
-		setSubmitting(true);
-
-		try {
-			const { title, body } = formElements;
-
-			await editPost({
-				id: postId,
-				title: title.value,
-				body: body.value,
-			});
-
-			toast({ status: 'success', title: 'Success edit post' });
-		} catch (error) {
-			toast({ status: 'error', title: error.message || 'Something went wrong' });
-		} finally {
-			setSubmitting(false);
-		}
-	}
-
-	return { isSubmitting, editPostMutation };
 }
