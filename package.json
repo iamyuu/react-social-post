@@ -6,7 +6,7 @@
 	"scripts": {
 		"# general commands": "--------------------------------------------------",
 		"cz": "git-cz",
-		"setup": "npm install && husky install",
+		"setup": "cp .env.example .env && npm install && husky install",
 		"# compiler commands": "--------------------------------------------------",
 		"dev": "vite",
 		"build": "vite build",

@@ -38,3 +38,13 @@
 ├── theme         # global styles and overridden chakra ui theme
 └── utils         # shared utility functions
 ```
+
+## Run in local machine
+
+```sh
+git clone https://github.com/iamyuu/react-social-post.git
+npm run setup
+npm run dev
+```
+
+> Otherwise you can see the live version on [react-social-post.vercel.app](https://react-social-post.vercel.app)
